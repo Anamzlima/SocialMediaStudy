@@ -34,6 +34,18 @@ namespace API
             {
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                });
+            });
+
+            //dúvida se deve adicionar esses dois serviços ou não
+            //services.AddAuthorization();
+            //services.AddRouting();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +71,8 @@ namespace API
 
             //middleware para permitir o roteamento para o controller certo
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
