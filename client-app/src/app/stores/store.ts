@@ -13,7 +13,7 @@ export const store: Store = {
 //isso aqui permite que a store fica disponível no contexto react
 export const StoreContext = createContext(store);
 
-//react hook simples que permite usar as stores dentro dos componentes
+//react hook simples que permite usar/disponibilizar as stores dentro dos componentes
 export function useStore() {
     //isso daqui é para usar o contexto que criamos aqui
     return useContext(StoreContext);
