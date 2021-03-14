@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Domain;
 using System;
 using Application.Activities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -18,6 +19,7 @@ namespace API.Controllers
         }
 
         //activities/id
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivities(Guid id)
         {
