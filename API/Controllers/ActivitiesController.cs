@@ -12,7 +12,6 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         //activities
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetActivities()
         {
@@ -20,7 +19,7 @@ namespace API.Controllers
         }
 
         //activities/id
-        [Authorize]
+        //[Authorize] - talvez tenha tirado esse atributo, não tenho certeza
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivities(Guid id)
         {
@@ -35,6 +34,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Create.Command {Activity = activity}));
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditActivity(Guid id, Activity activity)
         {
@@ -43,10 +43,17 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Edit.Command { Activity = activity }));
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(Guid id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = id }));
         }
     }
 }
